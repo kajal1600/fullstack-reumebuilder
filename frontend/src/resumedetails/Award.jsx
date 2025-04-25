@@ -41,13 +41,38 @@ function Award() {
     setInput({ ...input, [name]: value });
   };
 
-  const handleAddDetails = () => {
-    const errors = validateForm();
-    if (Object.keys(errors).length === 0) {
-      setStore([...store, input]);
-      setInput({ Organization: '', AwardTitle: '', Date: '', Description: '' });
+
+  const handleAddDetails = async () => {
+    if (validateForm()) {
+      try {
+        const userId = "67f232eac0dac7307b299183"; // Same userId as personalInfo
+  
+        const response = await fetch(`http://localhost:5000/api/users/add-award?userId=${userId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // For session-based authentication
+          body: JSON.stringify({
+            award: input, // Sending award data inside "award"
+          }),
+        });
+  
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error Response:", errorText);
+          throw new Error(`Request failed: ${response.status}`);
+        }
+  
+        alert("Award information added successfully!");
+      } catch (error) {
+        console.error("Error:", error.message);
+        alert("Failed to submit Award information.");
+      }
     }
   };
+  
+  
 
   return (
     <div className="flex h-screen">

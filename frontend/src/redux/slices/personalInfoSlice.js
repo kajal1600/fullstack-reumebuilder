@@ -10,7 +10,6 @@ const initialState = {
     State: "",
     ZipCode: "",
   },
-  store: [],
 };
 
 const personalInfoSlice = createSlice({
@@ -18,14 +17,18 @@ const personalInfoSlice = createSlice({
   initialState,
   reducers: {
     updateInput: (state, action) => {
-      state.input = { ...state.input, ...action.payload };
+      state.input = {
+        ...state.input,
+        ...action.payload,
+      };
     },
-    addDetails: (state) => {
-      state.store.push(state.input);
-      state.input = initialState.input; // Input reset karne ke liye
+    setPersonalInfo: (state, action) => {
+      state.input = action.payload;
     },
+    resetPersonalInfo: () => initialState,
   },
 });
 
-export const { updateInput, addDetails } = personalInfoSlice.actions;
+export const { updateInput, setPersonalInfo, resetPersonalInfo } = personalInfoSlice.actions;
 export default personalInfoSlice.reducer;
+

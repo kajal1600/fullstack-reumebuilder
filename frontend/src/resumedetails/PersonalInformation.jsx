@@ -36,37 +36,71 @@ function PersonalInformation() {
   };
 
 
-  const handleAddDetails = async () => {
-    if (validateForm()) {
-      try {
-        // Add the userId to the request body
-        const response = await fetch("http://localhost:5000/api/users/add-personal", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // Ensure cookies are sent for session-based auth
-          body: JSON.stringify({
-            userId: "67c4298db3b240dbedc7349c", // Replace with dynamic userId
-            personalInfo: input,  // Send the form data wrapped in personalInfo
-          }),
-        });
+  // const handleAddDetails = async () => {
+  //   if (validateForm()) {
+  //     try {
+  //       // Add the userId to the request body
+  //       const response = await fetch("http://localhost:5000/api/users/add-personal", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         credentials: "include", // Ensure cookies are sent for session-based auth
+  //         body: JSON.stringify({
+  //           personalInfo: input,  // Send the form data wrapped in personalInfo
+  //         }),
+  //       });
   
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("Error Response:", errorText);
-          throw new Error(`Request failed: ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //         const errorText = await response.text();
+  //         console.error("Error Response:", errorText);
+  //         throw new Error(`Request failed: ${response.status}`);
+  //       }
   
-        alert("Personal information added successfully!");
-      } catch (error) {
-        console.error("Error:", error.message);
-        alert("Failed to submit personal information.");
+  //       alert("Personal information added successfully!");
+  //     } catch (error) {
+  //       console.error("Error:", error.message);
+  //       alert("Failed to submit personal information.");
+  //     }
+  //   }
+  // };
+  
+  
+  
+  
+  
+  // Replace with dynamic userId
+
+const handleAddDetails = async () => {
+  if (validateForm()) {
+    try {
+      
+  const userId = "67f232eac0dac7307b299183"; 
+  const response = await fetch(`http://localhost:5000/api/users/add-personal?userId=${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Ensures session-based authentication
+        body: JSON.stringify({
+          personalInfo: input, // Send only personalInfo data
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error Response:", errorText);
+        throw new Error(`Request failed: ${response.status}`);
       }
+
+      alert("Personal information added successfully!");
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Failed to submit personal information.");
     }
-  };
-  
-  
+  }
+};
+
 
   return (
     <div className="flex h-screen">

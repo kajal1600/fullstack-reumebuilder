@@ -1,11 +1,10 @@
 
 
-
 // model/User.js
 
 const mongoose = require("mongoose");
 
-// Nested schema for Personal Information (for reference)
+// Nested schema for Personal Information
 const personalInfoSchema = new mongoose.Schema({
   Firstname: { type: String, required: true },
   LastName: { type: String, required: true },
@@ -16,35 +15,51 @@ const personalInfoSchema = new mongoose.Schema({
   ZipCode: { type: Number, required: true },
 });
 
-// Nested schema for Education (for reference)
-const educationSchema = new mongoose.Schema({
-  degree: { type: String, required: true },
-  institution: { type: String, required: true },
-  yearOfPassing: { type: Number, required: true },
-});
 
-// Updated Nested schema for Experience – now including Institute, Course, Country, State, Start, and Finish
-const experienceSchema = new mongoose.Schema({
+
+
+// Nested schema for Awards/Certifications
+const awardSchema = new mongoose.Schema({
+  Organization: { type: String, required: true },
+  AwardTitle: { type: String, required: true },
+  Date: { type: String, required: true },
+  Description: { type: String, required: true },
+});
+// // Corrected Nested schema for Education
+const educationSchema = new mongoose.Schema({
   Institute: { type: String, required: true },
   Course: { type: String, required: true },
   Country: { type: String, required: true },
   State: { type: String, required: true },
-  Start: { type: Date, required: true },  // Using Date type; change to String if preferred
-  Finish: { type: Date, required: true }, // Using Date type; change to String if preferred
+  Start: { type: String, required: true },
+  Finish: { type: String, required: true },
 });
 
-// Nested schema for Skills (for reference)
-const skillsSchema = new mongoose.Schema({
-  skillName: { type: String, required: true },
-  proficiency: { type: String, enum: ["Beginner", "Intermediate", "Advanced"], required: true },
+
+const experienceSchema = new mongoose.Schema({
+  EmployerName: { type: String, required: true },
+  Company: { type: String, required: true },
+  Address: { type: String, required: true },
+  Role: { type: String, required: true },
+  Start: { type: Date, required: true },
+  Finish: { type: Date, required: false },
 });
 
-// Nested schema for Projects (for reference)
-const projectsSchema = new mongoose.Schema({
-  projectName: { type: String, required: true },
-  description: { type: String, required: true },
-  technologiesUsed: { type: [String], required: true },
+
+
+// // Schema for Contact Information
+const contactInformationSchema = new mongoose.Schema({
+  Email: { type: String, required: true },
+  PhoneNumber: { type: String, required: true },
+  Linkedin: { type: String, required: true },
+  Twitter: { type: String, required: true },
+  Instagram: { type: String, required: true },
+  Portfolio: { type: String, required: true },
+  Github: { type: String, required: true },
 });
+
+
+
 
 // Main User schema including all nested schemas
 const userSchema = new mongoose.Schema({
@@ -57,14 +72,19 @@ const userSchema = new mongoose.Schema({
   // Nested Data
   personalInfo: personalInfoSchema,
   education: [educationSchema],
-  experience: [experienceSchema],
-  skills: [skillsSchema],
-  projects: [projectsSchema],
+  experience: [experienceSchema], // Updated Experience Schema
+  contactInformation: contactInformationSchema,
+  awards: [awardSchema],
+
 }, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+
+
+
+
 
 
 

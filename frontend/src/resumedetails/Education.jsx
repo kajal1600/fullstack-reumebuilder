@@ -54,20 +54,40 @@ function Education() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleAddDetails = () => {
+
+
+  const handleAddDetails = async () => {
     if (validateForm()) {
-      Setstore([...store, input]);
-      Setinput({
-        Institute: '',
-        Course: '',
-        Country: '',
-        State: '',
-        Start: '',
-        Finish: '',
-      });
+      try {
+        const userId = "67f232eac0dac7307b299183"; // Same userId as personalInfo
+  
+        const response = await fetch(`http://localhost:5000/api/users/add-education?userId=${userId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // For session-based authentication
+          body: JSON.stringify({
+            education: input, // Sending education data inside "Education"
+          }),
+        });
+  
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error Response:", errorText);
+          throw new Error(`Request failed: ${response.status}`);
+        }
+  
+        alert("Education information added successfully!");
+      } catch (error) {
+        console.error("Error:", error.message);
+        alert("Failed to submit Education information.");
+      }
     }
   };
-
+  
+  
+  
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -222,4 +242,25 @@ function Education() {
 }
 
 export default Education;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
